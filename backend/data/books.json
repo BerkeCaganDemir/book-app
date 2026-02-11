@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1770710986403354300,
+    "title": "Deneme Kitabı",
+    "author": "Test Yazar",
+    "notes": "Thunder Client testi",
+    "imageUrl": "",
+    "buyUrl": "https://example.com",
+    "createdAt": 1770710986,
+    "updatedAt": 1770710986
+  }
+]
