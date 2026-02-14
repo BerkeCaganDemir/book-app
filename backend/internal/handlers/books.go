@@ -100,7 +100,7 @@ func (h *BookHandler) UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := r.ParseMultipartForm(10 << 20); err != nil { // 10 MB
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
 		http.Error(w, "failed to parse multipart form", http.StatusBadRequest)
 		return
 	}
@@ -130,5 +130,21 @@ func (h *BookHandler) UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	// 🔥 KRİTİK KISIM
+	// Mevcut book'u al
+	book, err := h.Service.GetByID(id)
+	if err != nil {
+		http.Error(w, "book not found", http.StatusNotFound)
+		return
+	}
+
+	book.ImageUrl = "/" + outPath
+
+	updated, err := h.Service.Update(id, book)
+	if err != nil {
+		http.Error(w, "failed to update book", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(updated)
 }

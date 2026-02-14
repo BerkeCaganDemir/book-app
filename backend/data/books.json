@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1770710986403354300,
+    "title": "Deneme Kitabı",
+    "author": "Test Yazar",
+    "notes": "Thunder Client testi",
+    "imageUrl": "",
+    "buyUrl": "https://example.com",
+    "createdAt": 1770710986,
+    "updatedAt": 1770710986
+  },
+  {
+    "id": 1770882644357400900,
+    "title": "falan",
+    "author": "filan",
+    "notes": "",
+    "imageUrl": "",
+    "buyUrl": "",
+    "createdAt": 1770882644,
+    "updatedAt": 1770882644
+  },
+  {
+    "id": 1771092466734685300,
+    "title": "falan",
+    "author": "asdfasdf",
+    "notes": "",
+    "imageUrl": "",
+    "buyUrl": "",
+    "createdAt": 1771092466,
+    "updatedAt": 1771092466
+  },
+  {
+    "id": 1771092818480581100,
+    "title": "asdfasdf",
+    "author": "asdfasdf",
+    "notes": "",
+    "imageUrl": "",
+    "buyUrl": "",
+    "createdAt": 1771092818,
+    "updatedAt": 1771092818
+  },
+  {
+    "id": 1771093456052055000,
+    "title": "qaqweqweqwe",
+    "author": "qwerqwer",
+    "notes": "",
+    "imageUrl": "",
+    "buyUrl": "",
+    "createdAt": 1771093456,
+    "updatedAt": 1771093456
+  },
+  {
+    "id": 1771093563450725300,
+    "title": "qwerq",
+    "author": "qwerqwer",
+    "notes": "qwerqwer",
+    "imageUrl": "",
+    "buyUrl": "qwerqwer",
+    "createdAt": 1771093563,
+    "updatedAt": 1771093563
+  },
+  {
+    "id": 1771094417877730400,
+    "title": "asdf",
+    "author": "asdf",
+    "notes": "asdf",
+    "imageUrl": "",
+    "buyUrl": "asdf",
+    "createdAt": 1771094417,
+    "updatedAt": 1771094417
+  },
+  {
+    "id": 1771094491089526200,
+    "title": "asdfasdf",
+    "author": "asdfqwewdefgsdfg",
+    "notes": "sdfgarffqwefqwe",
+    "imageUrl": "",
+    "buyUrl": "qdwfqwefqwef",
+    "createdAt": 1771094491,
+    "updatedAt": 1771094491
+  },
+  {
+    "id": 1771094897417471300,
+    "title": "kkgggg",
+    "author": "ggggggg",
+    "notes": "gggggg",
+    "imageUrl": "",
+    "buyUrl": "gggggg",
+    "createdAt": 1771094897,
+    "updatedAt": 1771094897
+  },
+  {
+    "id": 1771095968195610100,
+    "title": "aasssssss",
+    "author": "sssssssssssss",
+    "notes": "ssdddddddddd",
+    "imageUrl": "",
+    "buyUrl": "dddddddddddd",
+    "createdAt": 1771095968,
+    "updatedAt": 1771095968
+  },
+  {
+    "id": 1771096174129686100,
+    "title": "ııııııııı",
+    "author": "ııııııııııı",
+    "notes": "ıııııııııııı",
+    "imageUrl": "",
+    "buyUrl": "ııııııııııııı",
+    "createdAt": 1771096174,
+    "updatedAt": 1771096174
+  },
+  {
+    "id": 1771096416612390000,
+    "title": "llllll",
+    "author": "lllllll",
+    "notes": "lllllllll",
+    "imageUrl": "/uploads/1771096416612390000.jpg",
+    "buyUrl": "llllllllll",
+    "createdAt": 1771096416,
+    "updatedAt": 1771096421
+  }
+]

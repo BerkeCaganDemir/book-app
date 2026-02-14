@@ -16,6 +16,9 @@ type BookService struct {
 func (s *BookService) GetAll() ([]models.Book, error) {
 	return s.Repo.GetAll()
 }
+func (s *BookService) GetByID(id string) (models.Book, error) {
+	return s.Repo.FindByID(id)
+}
 
 func (s *BookService) Create(book models.Book) (models.Book, error) {
 	if strings.TrimSpace(book.Title) == "" {
