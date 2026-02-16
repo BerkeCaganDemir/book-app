@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/BerkeCaganDemir/book-app-backend/internal/models"
 	"github.com/BerkeCaganDemir/book-app-backend/internal/repository"
 )
@@ -16,26 +18,29 @@ type BookService struct {
 func (s *BookService) GetAll() ([]models.Book, error) {
 	return s.Repo.GetAll()
 }
+
 func (s *BookService) GetByID(id string) (models.Book, error) {
 	return s.Repo.FindByID(id)
 }
 
 func (s *BookService) Create(book models.Book) (models.Book, error) {
-	if strings.TrimSpace(book.Title) == "" {
+	if book.Title == "" {
 		return models.Book{}, errors.New("title cannot be empty")
 	}
-	if strings.TrimSpace(book.Author) == "" {
+	if book.Author == "" {
 		return models.Book{}, errors.New("author cannot be empty")
 	}
 
 	now := time.Now().Unix()
-	book.ID = time.Now().UnixNano()
+
+	book.ID = uuid.New().String() //  STRING ID
 	book.CreatedAt = now
 	book.UpdatedAt = now
 
 	if err := s.Repo.Add(book); err != nil {
 		return models.Book{}, err
 	}
+
 	return book, nil
 }
 
@@ -45,7 +50,6 @@ func (s *BookService) Update(id string, updated models.Book) (models.Book, error
 		return models.Book{}, err
 	}
 
-	// preserve immutable fields and update others
 	existing.Title = updated.Title
 	existing.Author = updated.Author
 	existing.Notes = updated.Notes
@@ -56,6 +60,7 @@ func (s *BookService) Update(id string, updated models.Book) (models.Book, error
 	if err := s.Repo.Update(existing); err != nil {
 		return models.Book{}, err
 	}
+
 	return existing, nil
 }
 
@@ -68,16 +73,25 @@ func (s *BookService) Search(title string, author string) ([]models.Book, error)
 	if err != nil {
 		return nil, err
 	}
+
 	var result []models.Book
 
 	for _, b := range books {
-		if title != "" && !strings.Contains(strings.ToLower(b.Title), strings.ToLower(title)) {
+		if title != "" && !containsIgnoreCase(b.Title, title) {
 			continue
 		}
-		if author != "" && !strings.Contains(strings.ToLower(b.Author), strings.ToLower(author)) {
+		if author != "" && !containsIgnoreCase(b.Author, author) {
 			continue
 		}
 		result = append(result, b)
 	}
+
 	return result, nil
+}
+
+func containsIgnoreCase(source, search string) bool {
+	return strings.Contains(
+		strings.ToLower(source),
+		strings.ToLower(search),
+	)
 }

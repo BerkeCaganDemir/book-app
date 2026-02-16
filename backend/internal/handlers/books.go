@@ -12,8 +12,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// ...existing code...
-
 type BookHandler struct {
 	Service *services.BookService
 }
@@ -130,8 +128,8 @@ func (h *BookHandler) UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 🔥 KRİTİK KISIM
-	// Mevcut book'u al
+	//
+	// Mevcut book
 	book, err := h.Service.GetByID(id)
 	if err != nil {
 		http.Error(w, "book not found", http.StatusNotFound)

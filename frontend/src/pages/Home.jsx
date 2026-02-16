@@ -5,6 +5,7 @@ import BookList from "../components/BookList";
 function Home() {
   const [searchText, setSearchText] = useState("");
   const [viewType, setViewType] = useState("list");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
 
@@ -18,6 +19,9 @@ function Home() {
 
   const [books, setBooks] = useState([]);
 
+  
+  // FETCH BOOKS
+  
   const fetchBooks = async () => {
     const res = await fetch("http://localhost:8080/books");
     const data = await res.json();
@@ -34,7 +38,9 @@ function Home() {
       book.author.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  
   // CREATE
+  
   const handleSave = async () => {
     try {
       const response = await fetch("http://localhost:8080/books", {
@@ -48,8 +54,12 @@ function Home() {
         }),
       });
 
-      const newBook = await response.json();
-      setBooks((prev) => [...prev, newBook]);
+      if (!response.ok) {
+        console.error("Create failed");
+        return;
+      }
+
+      await fetchBooks();
 
       setIsModalOpen(false);
       setFormData({
@@ -64,30 +74,74 @@ function Home() {
     }
   };
 
+  
   // DELETE
+  
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:8080/books/${id}`, {
-      method: "DELETE",
-    });
-    setBooks((prev) => prev.filter((b) => b.id !== id));
-  };
-
-  // IMAGE UPLOAD (EDIT)
-  const handleImageUpload = async () => {
-    if (!formData.image || !editingBook) return;
-
-    const imageData = new FormData();
-    imageData.append("image", formData.image);
-
-    await fetch(
-      `http://localhost:8080/books/${editingBook.id}/image`,
-      {
-        method: "POST",
-        body: imageData,
-      }
+    const response = await fetch(
+      `http://localhost:8080/books/${id}`,
+      { method: "DELETE" }
     );
 
+    if (!response.ok) {
+      console.error("Delete failed");
+      return;
+    }
+
     await fetchBooks();
+  };
+
+  
+  // EDIT START
+ 
+  const handleEdit = (book) => {
+    setEditingBook(book);
+    setFormData({
+      title: book.title,
+      author: book.author,
+      note: book.notes,
+      url: book.buyUrl,
+      image: null,
+    });
+  };
+
+  
+  // UPDATE
+  
+  const handleUpdate = async () => {
+    if (!editingBook) return;
+
+    // 1 Text update
+    await fetch(`http://localhost:8080/books/${editingBook.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: formData.title,
+        author: formData.author,
+        notes: formData.note,
+        buyUrl: formData.url,
+        imageUrl: editingBook.imageUrl,
+      }),
+    });
+
+    //  Image upload 
+    if (formData.image) {
+      const imageData = new FormData();
+      imageData.append("image", formData.image);
+
+      await fetch(
+        `http://localhost:8080/books/${editingBook.id}/image`,
+        {
+          method: "POST",
+          body: imageData,
+        }
+      );
+    }
+
+    await fetchBooks();
+
     setEditingBook(null);
     setFormData((prev) => ({ ...prev, image: null }));
   };
@@ -106,12 +160,14 @@ function Home() {
         <BookList
           books={filteredBooks}
           viewType={viewType}
-          onEdit={(book) => setEditingBook(book)}
+          onEdit={handleEdit}
           onDelete={handleDelete}
         />
       </div>
 
+      
       {/* CREATE MODAL */}
+      
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-white p-8 rounded-xl w-96">
@@ -175,13 +231,50 @@ function Home() {
         </div>
       )}
 
-      {/* IMAGE EDIT MODAL */}
+     
+      {/* EDIT MODAL */}
+      
       {editingBook && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-white p-8 rounded-xl w-96">
             <h2 className="text-xl font-semibold mb-4">
-              Upload Image
+              Edit Book
             </h2>
+
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              className="w-full border p-2 mb-3 rounded"
+            />
+
+            <input
+              type="text"
+              value={formData.author}
+              onChange={(e) =>
+                setFormData({ ...formData, author: e.target.value })
+              }
+              className="w-full border p-2 mb-3 rounded"
+            />
+
+            <textarea
+              value={formData.note}
+              onChange={(e) =>
+                setFormData({ ...formData, note: e.target.value })
+              }
+              className="w-full border p-2 mb-3 rounded"
+            />
+
+            <input
+              type="text"
+              value={formData.url}
+              onChange={(e) =>
+                setFormData({ ...formData, url: e.target.value })
+              }
+              className="w-full border p-2 mb-3 rounded"
+            />
 
             <input
               type="file"
@@ -204,10 +297,10 @@ function Home() {
               </button>
 
               <button
-                onClick={handleImageUpload}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
+                onClick={handleUpdate}
+                className="px-4 py-2 bg-green-600 text-white rounded"
               >
-                Upload
+                Save Changes
               </button>
             </div>
           </div>

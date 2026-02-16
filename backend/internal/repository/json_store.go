@@ -7,7 +7,6 @@ import (
 	"sync"
 )
 
-// ...existing code...
 type JSONStore struct {
 	FilePath string
 	mu       sync.Mutex
@@ -46,5 +45,3 @@ func (s *JSONStore) Write(data interface{}) error {
 	}
 	return os.WriteFile(s.FilePath, bytes, 0644)
 }
-
-// ...existing code...
